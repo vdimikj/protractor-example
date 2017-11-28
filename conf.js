@@ -2,6 +2,13 @@
 require("babel-register")({
     presets: [ 'es2015' ]
 });
+const fs = require('fs');
+const FancyReporter = require('fancy-protractor-reporter').Reporter;
+
+const fancyReporter = new FancyReporter({
+    path: 'report/fancy' + new Date().toISOString().substring(0,19),
+    screenshotOnPassed: false,
+});
 
 exports.config = {
     /**
@@ -20,15 +27,23 @@ exports.config = {
         // set browser size...
         browser.manage().window().setSize(1024, 800);
 
+        if (!fs.existsSync('report')) {
+            fs.mkdirSync('report');
+        }
+
         // better jasmine 2 reports...
         const SpecReporter = require('jasmine-spec-reporter');
         jasmine.getEnv().addReporter(new SpecReporter({displayStacktrace: 'specs'}));
+        jasmine.getEnv().addReporter(fancyReporter);
+    },
+    afterLaunch: () => {
+        fancyReporter.combineReports();
     },
 
     capabilities: {
         browserName: 'chrome',
-        shardTestFiles: true,
-        maxInstances: 2,
+        shardTestFiles: false,
+        maxInstances: 1,
         chromeOptions: {
             args: [
                 // disable chrome's wakiness
