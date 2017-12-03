@@ -4,6 +4,7 @@ import userData from '../data/userData';
 
 describe ('non-angular login', () => {
     beforeEach(() => {
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         loginPage.goto();
     });
 
