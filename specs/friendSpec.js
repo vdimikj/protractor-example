@@ -48,7 +48,7 @@ describe ('angular app', () => {
 
         expect(friendPage.actualCount.getText()).toEqual('(only 3 actually....)');
     });
-    it('test that is failing', () => {
-        expect(false).toEqual(true);
+    it('test that is random failing', () => {
+        expect(Math.random() >= 0.5).toBeTruthy();
     });
 });
